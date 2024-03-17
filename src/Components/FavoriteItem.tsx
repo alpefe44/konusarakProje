@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import ConfirmModal from './ConfirmModal'
 import { useDispatch } from 'react-redux'
 import { deleteFavorite } from '../utils/slice/favoriteSlice'
+import CharacterDetailModal from './CharacterDetailModal'
 
 type Props = {
     item: Characters
@@ -19,6 +20,11 @@ const FavoriteItem = ({ item }: Props) => {
     const dispatch = useDispatch()
 
     const [isOpen, setOpen] = useState<boolean>(false)
+    const [characterOpen, setCharacterOpen] = useState<boolean>(false)
+
+    function characterClose() {
+        setCharacterOpen(false)
+    }
 
     function onClose() {
         setOpen(false)
@@ -26,7 +32,7 @@ const FavoriteItem = ({ item }: Props) => {
 
     return (
 
-        <View style={Styles.itemContainer}>
+        <Pressable onPress={() => setCharacterOpen(true)} style={Styles.itemContainer}>
             <Pressable onPress={() => setOpen(true)} style={Styles.iconStyle}>
                 <Icon name='heart' color={'#4c6925'} size={28}></Icon>
             </Pressable>
@@ -41,8 +47,9 @@ const FavoriteItem = ({ item }: Props) => {
                 </View>
             </View>
 
-            <ConfirmModal isVisible={isOpen} onCancel={onClose} onConfirm={() => {dispatch(deleteFavorite({ item: item })) , onClose()}} ></ConfirmModal>
-        </View>
+            <ConfirmModal isVisible={isOpen} onCancel={onClose} onConfirm={() => { dispatch(deleteFavorite({ item: item })), onClose() }} ></ConfirmModal>
+            <CharacterDetailModal isVisible={characterOpen} onClose={characterClose} character={item} ></CharacterDetailModal>
+        </Pressable>
     )
 }
 
@@ -70,7 +77,7 @@ const Styles = StyleSheet.create({
     },
     innerContainer: {
         flexDirection: 'row',
-        paddingLeft : 15,
+        paddingLeft: 15,
         gap: 15,
         width: '100%'
     },
