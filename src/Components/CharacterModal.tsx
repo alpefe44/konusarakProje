@@ -59,7 +59,12 @@ const CharacterModal = ({ isVisible, onClose, character }: Props) => {
                         <TouchableOpacity onPress={onClose} style={styles.closeButton}>
                             <Text style={styles.closeButtonText}>Close</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => dispatch(addFavorite({ item: character }))} style={styles.closeButton}>
+                        <TouchableOpacity onPress={() => {
+
+                            dispatch(addFavorite({ item: character })),
+                            onClose()
+                        }}
+                            style={styles.closeButton}>
                             <Text style={styles.closeButtonText}>Add Favorite</Text>
                         </TouchableOpacity>
                     </View>

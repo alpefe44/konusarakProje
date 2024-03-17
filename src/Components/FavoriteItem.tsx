@@ -41,7 +41,7 @@ const FavoriteItem = ({ item }: Props) => {
                 </View>
             </View>
 
-            <ConfirmModal isVisible={isOpen} onCancel={onClose} onConfirm={() => dispatch(deleteFavorite({ item: item }))} ></ConfirmModal>
+            <ConfirmModal isVisible={isOpen} onCancel={onClose} onConfirm={() => {dispatch(deleteFavorite({ item: item })) , onClose()}} ></ConfirmModal>
         </View>
     )
 }

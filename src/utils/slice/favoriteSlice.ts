@@ -3,16 +3,17 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { Characters } from '../../Types'
 import { Alert } from 'react-native'
 import PushNotification from 'react-native-push-notification';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 PushNotification.createChannel(
     {
-        channelId: "channel-id", 
-        channelName: "Channel Name", 
-        channelDescription: "A brief description of the channel", 
-        playSound: true, 
-        soundName: "default", 
-        vibrate: true, 
+        channelId: "channel-id",
+        channelName: "Channel Name",
+        channelDescription: "A brief description of the channel",
+        playSound: true,
+        soundName: "default",
+        vibrate: true,
     },
     created => console.log(`createChannel returned '${created}'`) // Kanal oluşturulduğunda geri çağrı
 );
@@ -36,12 +37,13 @@ export const favoriteSlice = createSlice({
                     console.log("Bu Karakter ZATEN VAR");
                 } else {
                     state.value.push(action.payload.item);
+                    AsyncStorage.setItem('favorites', JSON.stringify(state.value))
                 }
             } else {
                 PushNotification.localNotification({
                     channelId: "channel-id",
-                    title: "Favori karakter ekleme sayısını aştınız.", 
-                    message: " Başka bir karakteri favorilerden çıkarmalısınız", 
+                    title: "Favori karakter ekleme sayısını aştınız.",
+                    message: " Başka bir karakteri favorilerden çıkarmalısınız",
                 });
 
             }
@@ -52,6 +54,7 @@ export const favoriteSlice = createSlice({
 
             const newFavorites = state.value.filter((item) => item.id !== deletedItemId);
             state.value = newFavorites;
+            AsyncStorage.setItem('favorites', JSON.stringify(state.value))
 
         }
     },
